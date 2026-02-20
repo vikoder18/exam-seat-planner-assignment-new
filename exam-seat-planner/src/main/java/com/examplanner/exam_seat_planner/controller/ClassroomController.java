@@ -24,8 +24,12 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/classrooms")
-@CrossOrigin(origins = "http://localhost:4200")   // Allow Angular dev server
 @Validated
+@CrossOrigin(origins = {
+    "http://localhost:4200",    // Angular dev server
+    "http://localhost:80",      // Docker frontend
+    "http://localhost"          // Docker frontend (default port 80)
+})
 public class ClassroomController {
 
     private final ClassroomService classroomService;
