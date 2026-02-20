@@ -23,7 +23,7 @@ export interface AllocationResult {
   providedIn: 'root'
 })
 export class ClassroomService {
-  private readonly API_URL = 'http://localhost:8080/api/classrooms';
+  private readonly API_URL = 'http://16.16.70.54:8080/api/classrooms'; // http://16.16.70.54/add-classroom
 
   constructor(private http: HttpClient) {}
 
