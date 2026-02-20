@@ -28,7 +28,10 @@ import java.util.Map;
 @CrossOrigin(origins = {
     "http://localhost:4200",    // Angular dev server
     "http://localhost:80",      // Docker frontend
-    "http://localhost"          // Docker frontend (default port 80)
+    "http://localhost"  ,
+    "http://16.16.70.54:80" ,
+    "http://16.16.70.54"  ,     // Docker frontend (default port 80)
+    "http://16.16.70.54:4200"
 })
 public class ClassroomController {
 
