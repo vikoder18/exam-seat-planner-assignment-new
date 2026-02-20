@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="card card-accent">
+    <div class="card-body">
+      <h2 style="font-size:1.2rem; font-weight:700; color:#1e293b; margin-bottom:0.25rem;">🎯 Allocate Exam Seats</h2>
+      <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.5rem;">
+        Enter the number of students — the system will assign the minimum rooms, preferring lower floors
+      </p>
+
+      <form [formGroup]="allocateForm" (ngSubmit)="onAllocate()" novalidate>
+        <div class="form-group">
+          <label for="totalStudents">Total Students <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">👥</span>
+            <input
+              id="totalStudents" type="number" formControlName="totalStudents"
+              placeholder="e.g. 150" min="1"
+              [class.invalid]="f['totalStudents'].invalid && f['totalStudents'].touched"
+            />
+          </div>
+          <span class="error-text" *ngIf="f['totalStudents'].errors?.['required'] && f['totalStudents'].touched">
+            Please enter the number of students.
+          </span>
+          <span class="error-text" *ngIf="f['totalStudents'].errors?.['min'] && f['totalStudents'].touched">
+            Must be at least 1 student.
+          </span>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" [disabled]="allocateForm.invalid || isLoading">
+            {{ isLoading ? 'Allocating...' : '🚀 Allocate Rooms' }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="reset()">Reset</button>
+        </div>
+      </form>
+
+      <!-- Error -->
+      <div class="toast error" *ngIf="errorMessage">❌ {{ errorMessage }}</div>
+
+      <!-- Result Panel -->
+      <div class="result-panel" *ngIf="result">
+        <div class="result-header">
+          ✅ {{ result.message }}
+        </div>
+
+        <div style="padding: 1.25rem 1.5rem; background:#fafafa; border-bottom:1px solid #e2e8f0;">
+          <div class="summary-grid">
+            <div class="stat-card">
+              <span class="stat-value">{{ result.totalStudents }}</span>
+              <span class="stat-label">Students</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">{{ result.roomsUsed }}</span>
+              <span class="stat-label">Rooms Used</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">{{ result.totalSeatsAllocated }}</span>
+              <span class="stat-label">Total Seats</span>
+            </div>
+            <div class="stat-card highlight">
+              <span class="stat-value">{{ result.totalSeatsAllocated - result.totalStudents }}</span>
+              <span class="stat-label">Spare Seats</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-table-section">
+          <h4>Allocated Classrooms</h4>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Room ID</th>
+                  <th>Capacity</th>
+                  <th>Floor</th>
+                  <th>Near Washroom</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let room of result.allocatedClassrooms; let i = index">
+                  <td style="color:#94a3b8; font-size:0.8rem;">{{ i + 1 }}</td>
+                  <td><strong>{{ room.roomId }}</strong></td>
+                  <td>{{ room.capacity }}</td>
+                  <td>{{ room.floorNo === 0 ? 'Ground (0)' : 'Floor ' + room.floorNo }}</td>
+                  <td>
+                    <span class="badge" [class.yes]="room.nearWashroom" [class.no]="!room.nearWashroom">
+                      {{ room.nearWashroom ? '✅ Yes' : '❌ No' }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

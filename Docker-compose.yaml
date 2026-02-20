@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build:
+      context: ./exam-seat-planner
+      dockerfile: Dockerfile
+    container_name: exam-seat-planner
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/classrooms"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - exam-network
+
+  frontend:
+    build:
+      context: ./exam-seat-planner-frontend
+      dockerfile: Dockerfile
+    container_name: exam-seat-planner-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - exam-network
+
+networks:
+  exam-network:
+    driver: bridge

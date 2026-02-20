@@ -1,0 +1,79 @@
+<div class="page-container">
+  <div class="card card-accent">
+    <div class="card-body">
+      <h2 style="font-size:1.2rem; font-weight:700; color:#1e293b; margin-bottom:0.25rem;">🏫 Add Classroom</h2>
+      <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.5rem;">Register a new classroom for exam seating</p>
+
+      <form [formGroup]="classroomForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <div class="form-group">
+          <label for="roomId">Room ID <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">🏷️</span>
+            <input
+              id="roomId" type="text" formControlName="roomId"
+              placeholder="e.g. A101"
+              [class.invalid]="f['roomId'].invalid && f['roomId'].touched"
+            />
+          </div>
+          <span class="error-text" *ngIf="f['roomId'].invalid && f['roomId'].touched">
+            Room ID is required.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="capacity">Seating Capacity <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">💺</span>
+            <input
+              id="capacity" type="number" formControlName="capacity"
+              placeholder="e.g. 60" min="1"
+              [class.invalid]="f['capacity'].invalid && f['capacity'].touched"
+            />
+          </div>
+          <span class="error-text" *ngIf="f['capacity'].errors?.['required'] && f['capacity'].touched">Capacity is required.</span>
+          <span class="error-text" *ngIf="f['capacity'].errors?.['min'] && f['capacity'].touched">Minimum capacity is 1.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="floorNo">Floor Number <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">🏢</span>
+            <input
+              id="floorNo" type="number" formControlName="floorNo"
+              placeholder="e.g. 0 for ground floor" min="0"
+              [class.invalid]="f['floorNo'].invalid && f['floorNo'].touched"
+            />
+          </div>
+          <span class="error-text" *ngIf="f['floorNo'].errors?.['required'] && f['floorNo'].touched">Floor number is required.</span>
+          <span class="error-text" *ngIf="f['floorNo'].errors?.['min'] && f['floorNo'].touched">Floor must be 0 or greater.</span>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-group">
+          <label class="checkbox-wrapper" style="cursor:pointer;">
+            <input type="checkbox" formControlName="nearWashroom" />
+            <span> Near Washroom</span>
+          </label>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" [disabled]="classroomForm.invalid || isLoading">
+            {{ isLoading ? 'Adding...' : '➕ Add Classroom' }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="classroomForm.reset({nearWashroom: false})">
+            Clear
+          </button>
+        </div>
+      </form>
+
+      <div class="toast success" *ngIf="successMessage">
+        ✅ {{ successMessage }}
+      </div>
+      <div class="toast error" *ngIf="errorMessage">
+        ❌ {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

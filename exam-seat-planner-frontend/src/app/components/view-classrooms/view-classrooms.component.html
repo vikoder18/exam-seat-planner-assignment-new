@@ -1,0 +1,65 @@
+<div class="page-container">
+  <div class="card card-accent">
+    <div class="card-body">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem;">
+        <div>
+          <h2 style="font-size:1.2rem; font-weight:700; color:#1e293b; margin-bottom:0.2rem;">📋 All Classrooms</h2>
+          <p style="font-size:0.85rem; color:#64748b;">Complete list of registered classrooms</p>
+        </div>
+        <button class="btn-secondary" (click)="loadClassrooms()" [disabled]="isLoading">
+          🔄 Refresh
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-state" *ngIf="isLoading">Loading classrooms...</div>
+
+      <!-- Error -->
+      <div class="toast error" *ngIf="errorMessage">❌ {{ errorMessage }}</div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="!isLoading && classrooms.length === 0 && !errorMessage">
+        <div class="empty-icon">🏫</div>
+        <h3>No classrooms yet</h3>
+        <p>Add your first classroom to get started</p>
+        <a routerLink="/add-classroom" class="btn-primary" style="text-decoration:none; display:inline-flex;">
+          ➕ Add Classroom
+        </a>
+      </div>
+
+      <!-- Info Bar -->
+      <div class="info-bar" *ngIf="classrooms.length > 0">
+        <span>🏫 Total Rooms: <strong>{{ classrooms.length }}</strong></span>
+        <span>💺 Total Seats: <strong>{{ totalSeats }}</strong></span>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper" *ngIf="classrooms.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Room ID</th>
+              <th>Capacity</th>
+              <th>Floor</th>
+              <th>Near Washroom</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let room of classrooms; let i = index">
+              <td style="color:#94a3b8; font-size:0.8rem;">{{ i + 1 }}</td>
+              <td><strong>{{ room.roomId }}</strong></td>
+              <td>{{ room.capacity }}</td>
+              <td>{{ room.floorNo === 0 ? 'Ground (0)' : 'Floor ' + room.floorNo }}</td>
+              <td>
+                <span class="badge" [class.yes]="room.nearWashroom" [class.no]="!room.nearWashroom">
+                  {{ room.nearWashroom ? '✅ Yes' : '❌ No' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

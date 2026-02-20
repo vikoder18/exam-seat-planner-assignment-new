@@ -1,0 +1,33 @@
+<div class="app-wrapper">
+  <nav class="navbar">
+    <div class="nav-brand">
+      🎓 <span>Exam</span>Planner
+    </div>
+    <ul class="nav-links">
+      <li *ngFor="let link of navLinks">
+        <a [routerLink]="link.path" routerLinkActive="active">
+          {{ link.icon }} {{ link.label }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <h1>College Exam Seat Planner</h1>
+    <p>Greedy allocation system — minimum rooms, lower floors preferred</p>
+  </div>
+
+  <!-- Live stats bar always visible -->
+  <div class="stats-bar">
+    <div class="stat-pill">🏫 Rooms: <strong>{{ totalRooms }}</strong></div>
+    <div class="stat-pill">💺 Total Seats: <strong>{{ totalSeats }}</strong></div>
+  </div>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    College Exam Seat Planner &mdash; Greedy Allocation System
+  </footer>
+</div>
